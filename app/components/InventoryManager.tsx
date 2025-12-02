@@ -35,7 +35,7 @@ const EditableQuantity = ({
       step="any"
       value={localValue}
       onChange={handleChange}
-      className="w-20 text-center border border-zinc-300 dark:border-zinc-600 rounded px-2 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm"
+      className="w-20 text-center border-2 border-stone-300 rounded px-2 py-1 bg-white text-stone-900 text-sm font-medium focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none"
     />
   );
 };
@@ -174,24 +174,24 @@ export default function InventoryManager() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-md relative">
-      <h2 className="text-2xl font-bold mb-6 text-zinc-800 dark:text-zinc-100">
+    <div className="w-full max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-lg border border-stone-200 relative">
+      <h2 className="text-3xl font-bold mb-8 text-stone-900 tracking-tight">
         Inventaris Dapur BUMDes
       </h2>
 
       {/* Add Item Form */}
       <form
         onSubmit={addItem}
-        className="mb-8 p-4 bg-zinc-50 dark:bg-zinc-800 rounded-md border border-zinc-200 dark:border-zinc-700"
+        className="mb-10 p-6 bg-stone-100 rounded-xl border border-stone-300 shadow-sm"
       >
-        <h3 className="text-lg font-semibold mb-4 text-zinc-700 dark:text-zinc-200">
-          Tambah Barang Baru
+        <h3 className="text-lg font-bold mb-5 text-stone-800 flex items-center gap-2">
+          <span className="text-orange-600 text-xl">+</span> Tambah Barang Baru
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
           <div className="md:col-span-3">
             <label
               htmlFor="location"
-              className="block text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-1"
+              className="block text-sm font-bold text-stone-700 mb-2"
             >
               Lokasi (Padukuhan)
             </label>
@@ -199,7 +199,7 @@ export default function InventoryManager() {
               id="location"
               value={newItemLocation}
               onChange={(e) => setNewItemLocation(e.target.value)}
-              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
+              className="w-full px-4 py-2.5 border-2 border-stone-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 bg-white text-stone-900 font-medium"
             >
               {LOCATIONS.map((loc) => (
                 <option key={loc} value={loc}>
@@ -211,7 +211,7 @@ export default function InventoryManager() {
           <div className="md:col-span-4">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-1"
+              className="block text-sm font-bold text-stone-700 mb-2"
             >
               Nama Barang
             </label>
@@ -220,7 +220,7 @@ export default function InventoryManager() {
               id="name"
               value={newItemName}
               onChange={(e) => setNewItemName(e.target.value)}
-              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
+              className="w-full px-4 py-2.5 border-2 border-stone-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 bg-white text-stone-900 font-medium"
               placeholder="Contoh: Beras"
               required
             />
@@ -228,7 +228,7 @@ export default function InventoryManager() {
           <div className="md:col-span-2">
             <label
               htmlFor="quantity"
-              className="block text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-1"
+              className="block text-sm font-bold text-stone-700 mb-2"
             >
               Jumlah
             </label>
@@ -238,7 +238,7 @@ export default function InventoryManager() {
               id="quantity"
               value={newItemQuantity}
               onChange={(e) => setNewItemQuantity(e.target.value)}
-              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
+              className="w-full px-4 py-2.5 border-2 border-stone-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 bg-white text-stone-900 font-medium"
               placeholder="0"
               min="0"
               required
@@ -247,7 +247,7 @@ export default function InventoryManager() {
           <div className="md:col-span-2">
             <label
               htmlFor="unit"
-              className="block text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-1"
+              className="block text-sm font-bold text-stone-700 mb-2"
             >
               Satuan
             </label>
@@ -256,14 +256,14 @@ export default function InventoryManager() {
               id="unit"
               value={newItemUnit}
               onChange={(e) => setNewItemUnit(e.target.value)}
-              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
+              className="w-full px-4 py-2.5 border-2 border-stone-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 bg-white text-stone-900 font-medium"
               placeholder="kg, pcs"
             />
           </div>
           <div className="md:col-span-1 flex items-end">
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+              className="w-full h-[46px] bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center text-xl"
             >
               +
             </button>
@@ -272,14 +272,14 @@ export default function InventoryManager() {
       </form>
 
       {/* Filter */}
-      <div className="mb-4 flex items-center gap-4">
-        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+      <div className="mb-6 flex items-center gap-4 p-4 bg-stone-50 rounded-lg border border-stone-200">
+        <label className="text-sm font-bold text-stone-800">
           Filter Lokasi:
         </label>
         <select
           value={filterLocation}
           onChange={(e) => setFilterLocation(e.target.value)}
-          className="px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
+          className="px-4 py-2 border-2 border-stone-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 bg-white text-stone-900 font-medium"
         >
           <option value="Semua">Semua Padukuhan</option>
           {LOCATIONS.map((loc) => (
@@ -291,33 +291,33 @@ export default function InventoryManager() {
       </div>
 
       {/* Inventory List */}
-      <div className="overflow-x-auto">
+      <div className="overflow-hidden rounded-xl border border-stone-300 shadow-sm">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50">
-              <th className="py-3 px-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+            <tr className="bg-stone-100 border-b border-stone-300">
+              <th className="py-4 px-6 text-sm font-bold text-stone-700 uppercase tracking-wider">
                 Lokasi
               </th>
-              <th className="py-3 px-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+              <th className="py-4 px-6 text-sm font-bold text-stone-700 uppercase tracking-wider">
                 Nama Barang
               </th>
-              <th className="py-3 px-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400 text-center">
+              <th className="py-4 px-6 text-sm font-bold text-stone-700 uppercase tracking-wider text-center">
                 Jumlah
               </th>
-              <th className="py-3 px-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+              <th className="py-4 px-6 text-sm font-bold text-stone-700 uppercase tracking-wider">
                 Satuan
               </th>
-              <th className="py-3 px-4 text-sm font-semibold text-zinc-600 dark:text-zinc-400 text-right">
+              <th className="py-4 px-6 text-sm font-bold text-stone-700 uppercase tracking-wider text-right">
                 Aksi
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-stone-200 bg-white">
             {filteredItems.length === 0 ? (
               <tr>
                 <td
                   colSpan={5}
-                  className="py-8 text-center text-zinc-500 dark:text-zinc-400"
+                  className="py-12 text-center text-stone-500 font-medium"
                 >
                   Tidak ada barang ditemukan.
                 </td>
@@ -326,19 +326,19 @@ export default function InventoryManager() {
               filteredItems.map((item) => (
                 <tr
                   key={item.id}
-                  className="border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                  className="hover:bg-stone-50 transition-colors group"
                 >
-                  <td className="py-3 px-4 text-sm text-zinc-500 dark:text-zinc-400">
+                  <td className="py-4 px-6 text-sm text-stone-600 font-medium">
                     {item.location}
                   </td>
-                  <td className="py-3 px-4 text-zinc-800 dark:text-zinc-200 font-medium">
+                  <td className="py-4 px-6 text-stone-900 font-semibold text-base">
                     {item.name}
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center justify-center gap-2">
+                  <td className="py-4 px-6">
+                    <div className="flex items-center justify-center gap-3">
                       <button
                         onClick={() => updateQuantity(item.id, -1)}
-                        className="w-6 h-6 flex items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors text-sm"
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-200 text-stone-700 hover:bg-stone-300 hover:text-stone-900 transition-colors font-bold shadow-sm"
                       >
                         -
                       </button>
@@ -348,19 +348,19 @@ export default function InventoryManager() {
                       />
                       <button
                         onClick={() => updateQuantity(item.id, 1)}
-                        className="w-6 h-6 flex items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors text-sm"
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-200 text-stone-700 hover:bg-stone-300 hover:text-stone-900 transition-colors font-bold shadow-sm"
                       >
                         +
                       </button>
                     </div>
                   </td>
-                  <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">
+                  <td className="py-4 px-6 text-stone-600 font-medium">
                     {item.unit}
                   </td>
-                  <td className="py-3 px-4 text-right flex justify-end gap-2">
+                  <td className="py-4 px-6 text-right">
                     <button
                       onClick={() => deleteItem(item.id)}
-                      className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors"
+                      className="px-3 py-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md text-sm font-semibold transition-colors"
                     >
                       Hapus
                     </button>

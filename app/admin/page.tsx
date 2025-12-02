@@ -37,31 +37,33 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-100 dark:bg-black">
-        <form onSubmit={handleLogin} className="bg-white dark:bg-zinc-900 p-8 rounded-lg shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center text-zinc-800 dark:text-zinc-100">Login Admin</h2>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Username</label>
+      <div className="min-h-screen flex items-center justify-center bg-stone-100">
+        <form onSubmit={handleLogin} className="bg-white p-10 rounded-xl shadow-xl w-full max-w-md border border-stone-200">
+          <h2 className="text-3xl font-bold mb-8 text-center text-stone-900 tracking-tight">Login Admin</h2>
+          <div className="mb-6">
+            <label className="block text-sm font-bold text-stone-800 mb-2">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md dark:bg-zinc-800 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100"
+              className="w-full px-4 py-3 border-2 border-stone-300 rounded-lg text-stone-900 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 font-medium"
+              placeholder="Masukkan username"
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Password</label>
+          <div className="mb-8">
+            <label className="block text-sm font-bold text-stone-800 mb-2">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md dark:bg-zinc-800 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100"
+              className="w-full px-4 py-3 border-2 border-stone-300 rounded-lg text-stone-900 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 font-medium"
+              placeholder="Masukkan password"
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors">
+          <button type="submit" className="w-full bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition-all shadow-md hover:shadow-lg font-bold text-lg">
             Login
           </button>
-          <button type="button" onClick={() => router.push("/")} className="w-full mt-4 text-zinc-600 dark:text-zinc-400 text-sm hover:underline">
+          <button type="button" onClick={() => router.push("/")} className="w-full mt-6 text-stone-600 text-sm font-medium hover:text-stone-900 hover:underline transition-colors">
             Kembali ke Dashboard
           </button>
         </form>
@@ -70,10 +72,12 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-100 dark:bg-black py-8">
-      <div className="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-zinc-800 dark:text-zinc-100">Admin Panel</h1>
-        <button onClick={handleLogout} className="text-red-600 hover:text-red-800 font-medium">Logout</button>
+    <div className="min-h-screen bg-stone-100 py-10">
+      <div className="max-w-4xl mx-auto px-4 mb-8 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-stone-900 tracking-tight">Admin Panel</h1>
+        <button onClick={handleLogout} className="px-4 py-2 bg-white border border-stone-300 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-200 font-bold rounded-lg transition-all shadow-sm">
+          Logout
+        </button>
       </div>
       <InventoryManager />
     </div>
