@@ -76,6 +76,18 @@ export default function InventoryManager() {
   // Filter State
   const [filterLocation, setFilterLocation] = useState("Semua");
 
+  // Notification & Modal State
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+
+  const showNotification = (message: string, type: "success" | "error") => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
+
   // Load from localStorage on mount
   useEffect(() => {
     const savedItems = localStorage.getItem("kitchen-inventory");
@@ -105,7 +117,10 @@ export default function InventoryManager() {
   const addItem = (e: React.FormEvent) => {
     e.preventDefault();
     const qty = parseFloat(newItemQuantity);
-    if (!newItemName || isNaN(qty)) return;
+    if (!newItemName || isNaN(qty)) {
+      showNotification("Mohon lengkapi data barang.", "error");
+      return;
+    }
 
     // Check if item already exists in that location
     const existingItemIndex = items.findIndex(
@@ -119,6 +134,7 @@ export default function InventoryManager() {
       const updatedItems = [...items];
       updatedItems[existingItemIndex].quantity += qty;
       setItems(updatedItems);
+      showNotification(`Stok ${newItemName} berhasil diperbarui.`, "success");
     } else {
       const newItem: InventoryItem = {
         id: Date.now().toString(),
@@ -128,6 +144,7 @@ export default function InventoryManager() {
         location: newItemLocation,
       };
       setItems([...items, newItem]);
+      showNotification(`Barang ${newItemName} berhasil ditambahkan.`, "success");
     }
 
     setNewItemName("");
@@ -135,9 +152,15 @@ export default function InventoryManager() {
     setNewItemUnit("");
   };
 
-  const deleteItem = (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus barang ini?")) {
-      setItems(items.filter((item) => item.id !== id));
+  const handleDeleteClick = (id: string) => {
+    setItemToDelete(id);
+  };
+
+  const confirmDelete = () => {
+    if (itemToDelete) {
+      setItems(items.filter((item) => item.id !== itemToDelete));
+      setItemToDelete(null);
+      showNotification("Barang berhasil dihapus.", "success");
     }
   };
 
@@ -291,8 +314,9 @@ export default function InventoryManager() {
       </div>
 
       {/* Inventory List */}
-      <div className="overflow-hidden rounded-xl border border-stone-300 shadow-sm">
-        <table className="w-full text-left border-collapse">
+      <div className="rounded-xl border border-stone-300 shadow-sm bg-white overflow-hidden">
+        {/* Desktop Table View */}
+        <table className="w-full text-left border-collapse hidden md:table">
           <thead>
             <tr className="bg-stone-100 border-b border-stone-300">
               <th className="py-4 px-6 text-sm font-bold text-stone-700 uppercase tracking-wider">
@@ -348,7 +372,7 @@ export default function InventoryManager() {
                       />
                       <button
                         onClick={() => updateQuantity(item.id, 1)}
-                        className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-200 text-stone-700 hover:bg-stone-300 hover:text-stone-900 transition-colors font-bold shadow-sm"
+                        className="w-8 h-8 flex items-centealer justify-center rounded-full bg-stone-200 text-stone-700 hover:bg-stone-300 hover:text-stone-900 transition-colors font-bold shadow-sm"
                       >
                         +
                       </button>
@@ -359,7 +383,7 @@ export default function InventoryManager() {
                   </td>
                   <td className="py-4 px-6 text-right">
                     <button
-                      onClick={() => deleteItem(item.id)}
+                      onClick={() => handleDeleteClick(item.id)}
                       className="px-3 py-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md text-sm font-semibold transition-colors"
                     >
                       Hapus
@@ -370,7 +394,113 @@ export default function InventoryManager() {
             )}
           </tbody>
         </table>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-stone-200">
+          {filteredItems.length === 0 ? (
+            <div className="py-12 text-center text-stone-500 font-medium">
+              Tidak ada barang ditemukan.
+            </div>
+          ) : (
+            filteredItems.map((item) => (
+              <div key={item.id} className="p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="inline-block px-2 py-1 rounded-md bg-stone-100 text-xs font-bold text-stone-600 mb-1">
+                      {item.location}
+                    </span>
+                    <h4 className="text-lg font-bold text-stone-900">{item.name}</h4>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteClick(item.id)}
+                    className="text-red-600 hover:text-red-800 p-1"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="flex items-center justify-between bg-stone-50 p-3 rounded-lg">
+                  <span className="text-sm font-medium text-stone-600">Stok:</span>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => updateQuantity(item.id, -1)}
+                      className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 shadow-sm active:scale-95 transition-transform"
+                    >
+                      -
+                    </button>
+                    <div className="flex items-center gap-1">
+                      <EditableQuantity
+                        value={item.quantity}
+                        onChange={(val) => setItemQuantity(item.id, val)}
+                      />
+                      <span className="text-sm font-medium text-stone-500">{item.unit}</span>
+                    </div>
+                    <button
+                      onClick={() => updateQuantity(item.id, 1)}
+                      className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 shadow-sm active:scale-95 transition-transform"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {itemToDelete && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-stone-900 mb-2">Hapus Barang?</h3>
+              <p className="text-stone-600 mb-6">
+                Apakah Anda yakin ingin menghapus barang ini? Tindakan ini tidak dapat dibatalkan.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setItemToDelete(null)}
+                  className="flex-1 py-2.5 border-2 border-stone-200 text-stone-600 font-bold rounded-xl hover:bg-stone-50 transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-md hover:shadow-lg transition-all"
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notification Toast */}
+      {notification && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <div
+            className={`px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 ${
+              notification.type === "success"
+                ? "bg-stone-900 text-white"
+                : "bg-red-600 text-white"
+            }`}
+          >
+            <span className="text-2xl">
+              {notification.type === "success" ? "✅" : "⚠️"}
+            </span>
+            <p className="font-bold text-sm sm:text-base">{notification.message}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

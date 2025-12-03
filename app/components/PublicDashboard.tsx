@@ -34,6 +34,10 @@ export default function PublicDashboard() {
   // Order State
   const [orderingItem, setOrderingItem] = useState<InventoryItem | null>(null);
   const [orderQuantity, setOrderQuantity] = useState("");
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   useEffect(() => {
     const savedItems = localStorage.getItem("kitchen-inventory");
@@ -51,6 +55,11 @@ export default function PublicDashboard() {
     }
     setIsLoaded(true);
   }, []);
+
+  const showNotification = (message: string, type: "success" | "error") => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   const getDisplayItems = () => {
     if (filterLocation === "Semua") {
@@ -84,12 +93,12 @@ export default function PublicDashboard() {
 
     const qty = parseFloat(orderQuantity);
     if (isNaN(qty) || qty <= 0) {
-      alert("Mohon masukkan jumlah yang valid.");
+      showNotification("Mohon masukkan jumlah yang valid.", "error");
       return;
     }
 
     if (qty > orderingItem.quantity) {
-      alert("Stok tidak mencukupi!");
+      showNotification("Stok tidak mencukupi!", "error");
       return;
     }
 
@@ -106,7 +115,7 @@ export default function PublicDashboard() {
     setItems(newItems);
     localStorage.setItem("kitchen-inventory", JSON.stringify(newItems));
     
-    alert(`Berhasil memesan ${qty} ${orderingItem.unit} ${orderingItem.name}. Stok telah diperbarui.`);
+    showNotification(`Berhasil memesan ${qty} ${orderingItem.unit} ${orderingItem.name}.`, "success");
     setOrderingItem(null);
     setOrderQuantity("");
   };
@@ -125,12 +134,12 @@ export default function PublicDashboard() {
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-10 border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-stone-950 tracking-tight">
+          <h1 className="text-lg sm:text-2xl font-bold text-stone-950 tracking-tight truncate mr-4">
             Inventaris SPBG BUMDes Sendangsari
           </h1>
           <Link
             href="/admin"
-            className="px-5 py-2.5 bg-stone-900 text-white rounded-lg text-sm font-semibold hover:bg-stone-800 transition-all shadow-sm hover:shadow"
+            className="px-4 py-2 sm:px-5 sm:py-2.5 bg-stone-900 text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-stone-800 transition-all shadow-sm hover:shadow whitespace-nowrap"
           >
             Login Admin
           </Link>
@@ -267,6 +276,24 @@ export default function PublicDashboard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Notification Toast */}
+      {notification && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <div
+            className={`px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 ${
+              notification.type === "success"
+                ? "bg-stone-900 text-white"
+                : "bg-red-600 text-white"
+            }`}
+          >
+            <span className="text-2xl">
+              {notification.type === "success" ? "✅" : "⚠️"}
+            </span>
+            <p className="font-bold text-sm sm:text-base">{notification.message}</p>
           </div>
         </div>
       )}
