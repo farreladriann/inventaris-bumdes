@@ -99,6 +99,7 @@ export default function InventoryManager() {
           ...item,
           location: (item.location as string) || LOCATIONS[0],
         }));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems(migrated);
       } catch (e) {
         console.error("Failed to parse inventory from local storage", e);

@@ -48,6 +48,7 @@ export default function PublicDashboard() {
           ...item,
           location: (item.location as string) || LOCATIONS[0],
         }));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems(migrated);
       } catch (e) {
         console.error("Failed to parse inventory", e);
@@ -134,7 +135,7 @@ export default function PublicDashboard() {
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-10 border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <h1 className="text-lg sm:text-2xl font-bold text-stone-950 tracking-tight truncate mr-4">
+          <h1 className="text-lg sm:text-2xl font-bold text-stone-950 tracking-tight mr-4 leading-tight">
             Inventaris SPBG BUMDes Sendangsari
           </h1>
           <Link
